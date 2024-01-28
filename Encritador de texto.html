@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Encriptador de Texto</title>
+        
+        <!--mi estilo css-->
+        <style type="text/css">
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Segoe UI", Arial, sans-serif;
+                background-image: url("img/01.jpg");
+				background-size: cover;
+			}
+
+            header {
+                text-align: center;
+            }   
+            
+            .contenedor {
+                width: 100%;
+                max-width: 1200px;
+                
+                display: grid;
+                gap: 1rem; /*16px defecto tamaño fuente, Espacio entre celdas*/
+                grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); /*minmax pone un valor entre los dos*/
+                margin: 0 auto;
+            }
+
+            .columna {
+                background-color: rgb(122, 191, 247);
+                padding: 1rem 1rem 1rem 1rem;
+                box-shadow: 4px 4px 8px 4px rgba(99, 22, 22, 0.2);
+                border-radius: 2px;
+            }
+			
+
+            footer {
+                text-align: center;
+            }
+
+            /*INPUTS*/
+
+            .textarea {
+                width: 100%;
+                font-size: 1.2rem;
+                border: 1px solid rgb(10, 153, 214);
+            }
+
+
+ 
+            .selec {
+            padding: 0.5rem;
+            border: 1px solid rgb(62, 150, 45);
+            border-radius: 5px;
+            appearance: none; /* Quitar estilo nativo */
+            -webkit-appearance: none; /* Quitar estilo nativo en Webkit */
+            -moz-appearance: none; /* Quitar estilo nativo en Firefox */
+            cursor: pointer;
+            }
+
+            .boton {
+                font-size: 1rem;
+                border: none;
+                color: white;
+                padding: 15px 25px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                border-radius: 2px;
+            }
+
+            .boton:hover {
+                background-color: #B9B9B9; /*  */
+                cursor: pointer;
+            }
+
+            .boton-verde {
+                background-color: #04AA6D; /* Green */
+            }
+
+            .boton-naranja 
+            {
+                background-color: #FF8F7D; /*  */
+            }
+
+            .flotar-derecha 
+            {
+                float: right;
+            }
+
+
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Encriptador de Texto</h1>
+        </header>
+
+        <main class="contenedor">
+
+            <!--Entrada-->
+            <section class="columna">
+
+                <p><h3><label for="textoInput">Texto:</label></h3></p>
+
+                <textarea class="textarea" id="textoInput" rows="4" oninput="validarEntrada(this)"></textarea>
+
+                <p>
+                    <label for="opcionSelect">Seleccione una opción:</label>
+                    <select class="selec" id="opcionSelect">
+                    <option value="encriptar">Encriptar</option>
+                    <option value="desencriptar">Desencriptar</option>
+                    </select>
+
+                    <button class="boton flotar-derecha boton-verde" onclick="procesarTexto()">Procesar</button>
+                </p>
+            </section>
+            
+            <!--Salida-->
+            <section class="columna">
+                <p><h3><label for="resultadoOutput">Resultado:</label></h3></p>
+                <textarea class="textarea" id="resultadoOutput" rows="4" readonly></textarea>
+
+                <p><button class="boton boton-naranja" onclick="copiarTexto()">Copiar al Portapapeles</button></p>
+            </section>
+        </main>
+
+        <footer>
+            <h6>jhon nieves</h6>
+        </footer>
+
+    </body>
+
+    <script type="text/javascript">
+
+        function validarEntrada(elemento) {
+        // Eliminar caracteres no permitidos y convertir a minúsculas
+        elemento.value = elemento.value.replace(/[^a-z]/g, '').toLowerCase();
+        }
+
+        function procesarTexto() {
+        var textoInput = document.getElementById("textoInput").value.toLowerCase();
+        var opcionSelect = document.getElementById("opcionSelect").value;
+        var resultadoOutput = document.getElementById("resultadoOutput");
+
+        if (opcionSelect === "encriptar") {
+        resultadoOutput.value = encriptar(textoInput);
+        } else if (opcionSelect === "desencriptar") {
+        resultadoOutput.value = desencriptar(textoInput);
+        }
+        }
+
+        function encriptar(texto) {
+        var mapeo = {'e': 'enter', 'i': 'imes', 'a': 'ai', 'o': 'ober', 'u': 'ufat'};
+        var textoEncriptado = '';
+
+        for (var letra of texto) {
+        textoEncriptado += mapeo[letra] || letra;
+        }
+
+        return textoEncriptado;
+        }
+
+        function desencriptar(textoEncriptado) {
+        var mapeoInverso = {'enter': 'e', 'imes': 'i', 'ai': 'a', 'ober': 'o', 'ufat': 'u'};
+        var palabrasEncriptadas = textoEncriptado.split(' ');
+        var textoOriginal = '';
+
+        for (var palabra of palabrasEncriptadas) {
+        textoOriginal += mapeoInverso[palabra] || palabra;
+        }
+
+        return textoOriginal;
+        }
+
+        function copiarTexto() {
+        var resultadoOutput = document.getElementById("resultadoOutput");
+        resultadoOutput.select();
+        document.execCommand("copy");
+        alert("Texto copiado al portapapeles");
+        }
+    </script>
+
+</html>
